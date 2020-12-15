@@ -1,13 +1,5 @@
 // create an alarm
 chrome.alarms.create('read later notifier', { delayInMinutes : 1, periodInMinutes : 1 });
-var opt = {
-    type: 'list',
-    title: 'notification',
-    message: 'Primary message to display',
-    priority: 1,
-    items: [{ title: 'hoge', message: 'fuga'}],
-    iconUrl:'./my-image.png'
-};
 
 // set up addListener for notifies read later contents periodically
 chrome.alarms.onAlarm.addListener(function(alarm){
@@ -24,16 +16,28 @@ chrome.alarms.onAlarm.addListener(function(alarm){
         
         selectedReadLater.forEach(function(item, index, array) {
             console.log(index, item)
+            console.log(item.id)
+            console.log(item.title)
+            console.log(item.url)
+
+            var opt = {
+                type: 'list',
+                title: item.title,
+                message: item.url,
+                priority: 1,
+                items: [{ title: item.url, message: ''}],
+                iconUrl:'./my-image.png'
+            };
+
+            // if clicked, open web page with the specified URL
+            //TODO: fix a bug which shows three pages without clicking notification
+            chrome.notifications.create('index', opt, function(id) { 
+                chrome.notifications.onClicked.addListener(notificationClicked(item.url))
+                console.log("Last error:", chrome.runtime.lastError) 
+            } )
         })
         
-        //TODO: get the title and URL from them and set as notification
-
-        //TODO: send notificaion
     })
-    // chrome.notifications.create('notify1', opt, function(id) { console.log("Last error:", chrome.runtime.lastError) } )
-    // chrome.notifications.create('notify2', opt, function(id) { console.log("Last error:", chrome.runtime.lastError) } )
-    // chrome.notifications.create('notify3', opt, function(id) { console.log("Last error:", chrome.runtime.lastError) } )
-    //chrome.notifications.create('notify1', opt, function(id) { } )
 });
 
 // get 10 elements from argument
@@ -58,4 +62,8 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     
     return Math.floor(Math.random() * (max - min) + min); 
+}
+
+function notificationClicked(url) {
+    window.open(url, '_blank');
 }
