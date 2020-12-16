@@ -15,11 +15,6 @@ chrome.alarms.onAlarm.addListener(function(alarm){
         var selectedReadLater = getRandomIntArray(readLater, 3)
         
         selectedReadLater.forEach(function(item, index, array) {
-            console.log(index, item)
-            console.log(item.id)
-            console.log(item.title)
-            console.log(item.url)
-
             var opt = {
                 type: 'list',
                 title: item.title,
@@ -40,7 +35,6 @@ chrome.alarms.onAlarm.addListener(function(alarm){
     })
 });
 
-// get 10 elements from argument
 function getRandomIntArray(array, number) {
     if (number == 0) {
         return []
