@@ -6,19 +6,19 @@ chrome.alarms.onAlarm.addListener(function(alarm){
     
     // get all bookmark tree
     chrome.bookmarks.getTree(function(bookmark){
-        //TODO: enable to select directory name and content item number in setting menu
+        // TODO: enable to select directory name and content item number in setting menu(#3)
         var selectedDirectoryName = "read_later"
         var selectedItemNumber = 3
         var root = bookmark[0]['children']
         var bookMarkBar = root[0]['children']
 
-        // get read_later directory from book mark bar
+        // get read later directory from book mark bar
         var readLater = bookMarkBar.filter(function(element, index, array) {
             return isChildrenArray(element) && element.title == selectedDirectoryName
         })
 
         // get random read later contents from readLater 
-        //TODO: error handling(if n <= 2) when implementing setting menu
+        // TODO: error handling(if n <= 2) when implementing setting menu(#3)
         var selectedReadLater = getReadLaterContents(readLater[0]['children'], selectedItemNumber)
         console.log(selectedReadLater)
         
