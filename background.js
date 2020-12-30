@@ -1,5 +1,5 @@
 // create an alarm
-chrome.alarms.create('read later notifier', { delayInMinutes : 1, periodInMinutes : 1 });
+chrome.alarms.create('read later notifier', { delayInMinutes : 1, periodInMinutes : 2 });
 
 // set up addListener for notifies read later contents periodically
 chrome.alarms.onAlarm.addListener(function(alarm){
@@ -22,23 +22,25 @@ chrome.alarms.onAlarm.addListener(function(alarm){
         var selectedReadLater = getReadLaterContents(readLater[0]['children'], selectedItemNumber)
         console.log(selectedReadLater)
         
-        // selectedReadLater.forEach(function(item, index, array) {
-        //     var opt = {
-        //         type: 'list',
-        //         title: item.title,
-        //         message: item.url,
-        //         priority: 1,
-        //         items: [{ title: item.url, message: ''}],
-        //         iconUrl:'./my-image.png'
-        //     };
+        selectedReadLater.forEach(function(item, index, array) {
+            var options = {
+                type: 'list',
+                title: item.title,
+                message: item.url,
+                priority: 1,
+                items: [{ title: item.url, message: ''}],
+                iconUrl:'./my-image.png',
+                buttons: [
+                    {title: 'Open'}
+                ],
+            };
 
-        //     // if clicked, open web page with the specified URL
-        //     //TODO: fix a bug which shows three pages without clicking notification
-        //     chrome.notifications.create('index', opt, function(id) { 
-        //         chrome.notifications.onClicked.addListener(notificationClicked(item.url))
-        //         console.log("Last error:", chrome.runtime.lastError) 
-        //     } )
-        // })
+            // if clicked, open web page with the specified URL
+            //TODO: fix a bug which shows three pages without clicking notification
+            chrome.notifications.create('index', options, function(id) { 
+                chrome.notifications.onClicked.addListener(notificationClicked(item.url))
+            } )
+        })
         
     })
 });
@@ -72,5 +74,5 @@ function isChildrenArray(elem) {
 }
 
 function notificationClicked(url) {
-    window.open(url, '_blank');
+    chrome.tabs.create({ "url": url, active: false });
 }
