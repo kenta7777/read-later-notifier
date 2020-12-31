@@ -23,25 +23,15 @@ chrome.alarms.onAlarm.addListener(function(alarm){
         console.log(selectedReadLater)
         
         selectedReadLater.forEach(function(item, index, array) {
-            var options = {
-                type: 'list',
-                title: item.title,
-                message: item.url,
-                priority: 1,
-                items: [{ title: item.url, message: ''}],
-                iconUrl:'./my-image.png',
-                buttons: [
-                    {title: 'Open'}
-                ],
-            };
-
-            // if clicked, open web page with the specified URL
-            //TODO: fix a bug which shows three pages without clicking notification
-            chrome.notifications.create('index', options, function(id) { 
-                chrome.notifications.onClicked.addListener(notificationClicked(item.url))
+            var notification = new Notification(item.title, {               
+                body: "",
+                requireInteraction: true     
+            });
+            notification.addEventListener("click", function (event) {
+                notificationClicked(item.url)
+                notification.close()
             } )
         })
-        
     })
 });
 
