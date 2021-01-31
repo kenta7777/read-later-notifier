@@ -1,5 +1,5 @@
 // create an alarm
-chrome.alarms.create('read later notifier', { delayInMinutes : 1, periodInMinutes : 10 });
+chrome.alarms.create('read later notifier', { delayInMinutes : 1, periodInMinutes : 60 });
 
 // set up addListener for notifies read later contents periodically
 chrome.alarms.onAlarm.addListener(function(alarm){
@@ -44,7 +44,7 @@ function getReadLaterContents(array, number) {
     var selectedReadLaterContentsArray = []
     const max = array.length
     
-    for (let index = 0; index < number ;index++) {
+    for (let index = 0; index < number; index++) {
         var randomInt = getRandomInt(0, max)
         selectedReadLaterContentsArray.push(array[randomInt])
     }
