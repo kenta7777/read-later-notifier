@@ -35,20 +35,20 @@ chrome.alarms.onAlarm.addListener(function(alarm){
     })
 });
 
-function getReadLaterContents(array, number) {
-    if (number == 0) {
+function getReadLaterContents(contentsArray, contentsTotalCount) {
+    if (contentsTotalCount == 0) {
         return []
     }
     
-    var selectedReadLaterContentsArray = []
-    const max = array.length
+    var selectedContentsArray = []
+    const max = contentsArray.length
 
-    var randomIndexesArray = getRandomIndexes(max, number)
+    var randomIndexesArray = getRandomIndexes(max, contentsTotalCount)
     randomIndexesArray.forEach( elem => {
-        selectedReadLaterContentsArray.push(array[elem])
+        selectedContentsArray.push(contentsArray[elem])
     })
     
-    return selectedReadLaterContentsArray
+    return selectedContentsArray
 }
 
 function getRandomInt(min, max) {
@@ -61,19 +61,19 @@ function getRandomInt(min, max) {
 // get an array that holds selected number of index for contents array
 // to avoid the duplicate of contents
 function getRandomIndexes(max, selectedItemNumber) {
-    var array = []
+    var randomIndexesArray = []
     
     for (let index = 0; index < selectedItemNumber; index++) { 
         while(true) {
             var randomInt = getRandomInt(0, max)
-            if(!array.includes(randomInt)) {
-                array.push(randomInt)
+            if(!randomIndexesArray.includes(randomInt)) {
+                randomIndexesArray.push(randomInt)
                 break
             }
         }
     }
 
-    return array
+    return randomIndexesArray
 }
 
 function isChildrenArray(elem) {
