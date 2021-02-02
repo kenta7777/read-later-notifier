@@ -1,7 +1,6 @@
-// create an alarm
 chrome.alarms.create('read later notifier', { delayInMinutes : 1, periodInMinutes : 60 });
 
-// set up addListener for notifies read later contents periodically
+// set up addListener for notifying read later contents periodically
 chrome.alarms.onAlarm.addListener(function(alarm){
     
     // get all bookmark tree
