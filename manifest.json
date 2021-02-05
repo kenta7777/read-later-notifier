@@ -3,7 +3,8 @@
     "manifest_version": 2,
     "version": "1.0",
     "browser_action": {
-      "default_icon": "my-image.png"
+      "default_icon": "my-image.png",
+      "default_popup": "popup.html"
     },
     "background" : {
       "scripts" : ["background.js"]
