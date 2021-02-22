@@ -6,6 +6,12 @@ chrome.alarms.onAlarm.addListener(function(alarm){
     // get all bookmark tree
     chrome.bookmarks.getTree(function(bookmark){
         // TODO: enable to select directory name and content item number in setting menu(#3)
+        var selectedFolderName = ""
+        chrome.storage.local.get(['selectedFolder'], function(result) {
+            console.log('Selected folder: ' + result.selectedFolder);
+            selectedFolderName = result.selectedFolder
+        });
+        
         var selectedDirectoryName = "read_later"
         var selectedContentCount = 3
         var root = bookmark[0]['children']

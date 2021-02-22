@@ -18,7 +18,8 @@
     "permissions": [
         "bookmarks",
         "alarms",
-        "notifications"
+        "notifications",
+        "storage"
     ]
   }
   
