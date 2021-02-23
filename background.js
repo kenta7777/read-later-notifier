@@ -1,4 +1,20 @@
-chrome.alarms.create('read later notifier', { delayInMinutes : 1, periodInMinutes : 60 });
+// Set up notification interval
+chrome.storage.local.get(['notificationInterval'], function(result) {
+    let interval;
+    let selectedNotificationInterval;
+    
+    console.log('The notification interval stored in chrome is ' + result.notificationInterval);
+    selectedNotificationInterval = parseInt(result.notificationInterval, 10)
+
+    if (isNotificationIntervalInvalid(selectedNotificationInterval)) {
+        // default
+        interval = 30
+    } else {
+        interval = selectedNotificationInterval
+    }
+
+    chrome.alarms.create('read later notifier', { delayInMinutes : 1, periodInMinutes : interval });
+});
 
 // load selected folder name in popup
 let selectedFolderName;
@@ -100,4 +116,8 @@ function notificationClicked(url) {
 
 function isFolderNameValid(folderName) {
     return folderName == "" | folderName == null || folderName == undefined
+}
+
+function isNotificationIntervalInvalid(notificationInterval) {
+    return notificationInterval == "" | notificationInterval == null || notificationInterval == undefined
 }

@@ -22,4 +22,25 @@ document.addEventListener("DOMContentLoaded", function(){
             console.log('Selected folder has been specified: ' + selectedFolderName);
         })
     })
+
+    // make text fields editable if they are tapped
+    notification_interval.addEventListener("click", function() {
+        console.log("notification interval text field is clicked!")
+        notification_interval.contentEditable = true
+    });
+
+    // make text fields non editable and inputted text is stored 
+    // in chrome if the set button is tapped 
+    notification_interval_button.addEventListener("click", function() {
+        console.log("notification interval set button is clicked!")
+        notification_interval.contentEditable = true
+
+        const selectedNotificationInterval = notification_interval.textContent
+        notification_interval.contentEditable = false
+
+        // store inputted notification interval
+        chrome.storage.local.set({notificationInterval: selectedNotificationInterval}, function() {
+            console.log('Notification interval has been specified: ' + selectedNotificationInterval);
+        })
+    });
 })
