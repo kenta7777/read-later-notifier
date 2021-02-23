@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function(){
     // in chrome if the set button is tapped 
     notification_interval_button.addEventListener("click", function() {
         console.log("notification interval set button is clicked!")
-        notification_interval.contentEditable = true
 
         const selectedNotificationInterval = notification_interval.textContent
         notification_interval.contentEditable = false
@@ -43,4 +42,23 @@ document.addEventListener("DOMContentLoaded", function(){
             console.log('Notification interval has been specified: ' + selectedNotificationInterval);
         })
     });
+
+    number_of_notifications.addEventListener("click", function() {
+        console.log("number of notification text field is clicked!")
+        number_of_notifications.contentEditable = true
+    });
+
+    number_of_notifications_button.addEventListener("click", function() {
+        console.log("number of notification set button is clicked!")
+
+        const selectedNumberOfNotifications = number_of_notifications.textContent
+        number_of_notifications.contentEditable = false
+
+        // store inputted notification interval
+        chrome.storage.local.set({numberOfNotifications: selectedNumberOfNotifications}, function() {
+            console.log('Number of Notifications has been specified: ' + selectedNumberOfNotifications);
+        })
+    });
+
+    
 })

@@ -23,12 +23,18 @@ chrome.storage.local.get(['selectedFolder'], function(result) {
     selectedFolderName = result.selectedFolder
 });
 
+// load selected number of notifications at one time
+let selectedNumberOfNotifications;
+chrome.storage.local.get(['numberOfNotifications'], function(result) {
+    console.log('The stored number of notifications: ' + result.numberOfNotifications);
+    selectedNumberOfNotifications = parseInt(result.numberOfNotifications, 10)
+});
+
 // set up addListener for notifying read later contents periodically
 chrome.alarms.onAlarm.addListener(function(alarm){
     
     // get all bookmark tree
     chrome.bookmarks.getTree(function(bookmark){
-        // TODO: enable to select folder name and content item number in setting menu(#3)
         let folderName;        
         if (isFolderNameValid(selectedFolderName)) {
             folderName = selectedFolderName
@@ -39,7 +45,18 @@ chrome.alarms.onAlarm.addListener(function(alarm){
         
         console.log('folder name: ' + folderName)
         
-        var selectedContentCount = 3
+        let notificationsCount;
+        if (isNumberOfNotificationsValid(selectedNumberOfNotifications)) {
+            notificationsCount = selectedNumberOfNotifications
+            console.log('then branch. notificationsCount: '+ notificationsCount)
+        } else {
+            // default
+            notificationsCount = 3
+        }
+
+        console.log('notifications count: ' + notificationsCount)
+
+
         var root = bookmark[0]['children']
         var bookMarkBar = root[0]['children']
 
@@ -49,7 +66,7 @@ chrome.alarms.onAlarm.addListener(function(alarm){
         })
 
         // get random read later contents from readLater 
-        var selectedReadLater = getReadLaterContents(readLater[0]['children'], selectedContentCount)
+        var selectedReadLater = getReadLaterContents(readLater[0]['children'], notificationsCount)
         console.log(selectedReadLater)
         
         selectedReadLater.forEach(function(item, index, array) {
@@ -65,15 +82,15 @@ chrome.alarms.onAlarm.addListener(function(alarm){
     })
 });
 
-function getReadLaterContents(contentsArray, selectedContentCount) {
-    if (selectedContentCount == 0) {
+function getReadLaterContents(contentsArray, notificationsCount) {
+    if (notificationsCount == 0) {
         return []
     }
     
     var selectedContentsArray = []
     const contentTotalCount = contentsArray.length
 
-    var randomIndexesArray = getRandomIndexes(contentTotalCount, selectedContentCount)
+    var randomIndexesArray = getRandomIndexes(contentTotalCount, notificationsCount)
     randomIndexesArray.forEach( elem => {
         selectedContentsArray.push(contentsArray[elem])
     })
@@ -90,10 +107,10 @@ function getRandomInt(min, max) {
 
 // get selected number of indexes without duplication 
 // to avoid showing same contents
-function getRandomIndexes(contentTotalCount, selectedContentCount) {
+function getRandomIndexes(contentTotalCount, notificationsCount) {
     var randomIndexesArray = []
     
-    for (let index = 0; index < selectedContentCount; index++) { 
+    for (let index = 0; index < notificationsCount; index++) { 
         while(true) {
             var randomInt = getRandomInt(0, contentTotalCount)
             if(!randomIndexesArray.includes(randomInt)) {
@@ -115,6 +132,10 @@ function notificationClicked(url) {
 }
 
 function isFolderNameValid(folderName) {
+    return folderName != "" | folderName != null || folderName != undefined
+}
+
+function isNumberOfNotificationsValid(folderName) {
     return folderName != "" | folderName != null || folderName != undefined
 }
 
