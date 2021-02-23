@@ -3,14 +3,14 @@ chrome.storage.local.get(['notificationInterval'], function(result) {
     let interval;
     let selectedNotificationInterval;
     
-    console.log('The notification interval stored in chrome is ' + result.notificationInterval);
+    console.log('The stored notification interval: ' + result.notificationInterval);
     selectedNotificationInterval = parseInt(result.notificationInterval, 10)
 
-    if (isNotificationIntervalInvalid(selectedNotificationInterval)) {
-        // default
-        interval = 30
-    } else {
+    if (isNotificationIntervalValid(selectedNotificationInterval)) {
         interval = selectedNotificationInterval
+    } else {
+        // default
+        interval = 30    
     }
 
     chrome.alarms.create('read later notifier', { delayInMinutes : 1, periodInMinutes : interval });
@@ -19,7 +19,7 @@ chrome.storage.local.get(['notificationInterval'], function(result) {
 // load selected folder name in popup
 let selectedFolderName;
 chrome.storage.local.get(['selectedFolder'], function(result) {
-    console.log('The folder name which is stored in chrome is ' + result.selectedFolder);
+    console.log('The stored folder name: ' + result.selectedFolder);
     selectedFolderName = result.selectedFolder
 });
 
@@ -28,13 +28,13 @@ chrome.alarms.onAlarm.addListener(function(alarm){
     
     // get all bookmark tree
     chrome.bookmarks.getTree(function(bookmark){
-        const defaultFolderName = "read_later"
         // TODO: enable to select folder name and content item number in setting menu(#3)
         let folderName;        
         if (isFolderNameValid(selectedFolderName)) {
-            folderName = defaultFolderName
-        } else {
             folderName = selectedFolderName
+        } else {
+            // default
+            folderName = "read_later"
         }
         
         console.log('folder name: ' + folderName)
@@ -115,9 +115,9 @@ function notificationClicked(url) {
 }
 
 function isFolderNameValid(folderName) {
-    return folderName == "" | folderName == null || folderName == undefined
+    return folderName != "" | folderName != null || folderName != undefined
 }
 
-function isNotificationIntervalInvalid(notificationInterval) {
-    return notificationInterval == "" | notificationInterval == null || notificationInterval == undefined
+function isNotificationIntervalValid(notificationInterval) {
+    return notificationInterval != "" | notificationInterval != null || notificationInterval != undefined
 }
