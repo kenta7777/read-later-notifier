@@ -1,29 +1,38 @@
 chrome.alarms.create('read later notifier', { delayInMinutes : 1, periodInMinutes : 60 });
 
+// load selected folder name in popup
+let selectedFolderName;
+chrome.storage.local.get(['selectedFolder'], function(result) {
+    console.log('The folder name which is stored in chrome is ' + result.selectedFolder);
+    selectedFolderName = result.selectedFolder
+});
+
 // set up addListener for notifying read later contents periodically
 chrome.alarms.onAlarm.addListener(function(alarm){
     
     // get all bookmark tree
     chrome.bookmarks.getTree(function(bookmark){
-        // TODO: enable to select directory name and content item number in setting menu(#3)
-        var selectedFolderName = ""
-        chrome.storage.local.get(['selectedFolder'], function(result) {
-            console.log('Selected folder: ' + result.selectedFolder);
-            selectedFolderName = result.selectedFolder
-        });
+        const defaultFolderName = "read_later"
+        // TODO: enable to select folder name and content item number in setting menu(#3)
+        let folderName;        
+        if (isFolderNameValid(selectedFolderName)) {
+            folderName = defaultFolderName
+        } else {
+            folderName = selectedFolderName
+        }
         
-        var selectedDirectoryName = "read_later"
+        console.log('folder name: ' + folderName)
+        
         var selectedContentCount = 3
         var root = bookmark[0]['children']
         var bookMarkBar = root[0]['children']
 
-        // get read later directory from book mark bar
+        // get read later folder from book mark bar
         var readLater = bookMarkBar.filter(function(elem, index, array) {
-            return isChildrenArray(elem) && elem.title == selectedDirectoryName
+            return isChildrenArray(elem) && elem.title == folderName
         })
 
         // get random read later contents from readLater 
-        // TODO: error handling(if n <= 2) when implementing setting menu(#3)
         var selectedReadLater = getReadLaterContents(readLater[0]['children'], selectedContentCount)
         console.log(selectedReadLater)
         
@@ -87,4 +96,8 @@ function isChildrenArray(elem) {
 
 function notificationClicked(url) {
     chrome.tabs.create({ "url": url, active: false });
+}
+
+function isFolderNameValid(folderName) {
+    return folderName == "" | folderName == null || folderName == undefined
 }
