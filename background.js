@@ -1,4 +1,4 @@
-// Set up notification interval
+// set up notification interval
 chrome.storage.local.get(['notificationInterval'], function(result) {
     let interval;
     let selectedNotificationInterval;
