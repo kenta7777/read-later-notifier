@@ -3,6 +3,25 @@ document.addEventListener("DOMContentLoaded", function(){
     var selected_folder_text_field = document.getElementById('selected_folder')
     var selected_folder_set_button = document.getElementById('selected_folder_button')
     
+    // set values to text fields from storage
+    chrome.storage.local.get(['selectedFolder'], function(result) {
+        console.log('load selected folder name: ' + result.selectedFolder);
+        selected_folder_text_field.textContent = result.selectedFolder
+        console.log('loaded value: ' + selected_folder_text_field.textContent)
+    });
+
+    chrome.storage.local.get(['notificationInterval'], function(result) {
+        console.log('load notification interval: ' + result.notificationInterval);
+        notification_interval.textContent = result.notificationInterval
+        console.log('loaded value: ' + notification_interval.textContent)
+    });
+
+    chrome.storage.local.get(['numberOfNotifications'], function(result) {
+        console.log('load number of notifications: ' + result.numberOfNotifications);
+        number_of_notifications.textContent = result.numberOfNotifications
+        console.log('loaded value: ' + number_of_notifications.textContent)
+    });
+    
     // make text field for folder name editable if they are tapped
     selected_folder_text_field.addEventListener("click", function() {
         console.log("selected folder text field is clicked!")
