@@ -1,33 +1,34 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="popup.js"></script>
         <title>read-later-notifier</title>
         <link rel="stylesheet" href="style.css">
     </head> 
+    <!-- Specify the folder where the contents are notified -->
     <body>
-        <h2>Selected folder </h2>
-        <blockquote contenteditable="true">
-            
+        <h2>Selected folder</h2>
+        <blockquote id="selected_folder" contenteditable="true">
         </blockquote>
-        <button type="button">
+        <button id="selected_folder_button" type="button">
             Set
         </button>
     </body>
+    <!-- Specify the notification interval -->
     <body>
-        <h2>Time period </h2>
-        <blockquote contenteditable="true">
-            
+        <h2>Notification interval</h2>
+        <blockquote id="notification_interval" contenteditable="true">
         </blockquote>
-        <button type="button">
+        <button id="notification_interval_button" type="button">
             Set
         </button>
     </body>
+    <!-- Number of notifications at one time -->
     <body>
-        <h2>All notifies are removed in </h2>
-        <blockquote contenteditable="true">
-            
+        <h2>Number of notifications at one time</h2>
+        <blockquote id="number_of_notifications" contenteditable="true">
         </blockquote>
-        <button type="button">
+        <button id="number_of_notifications_button" type="button">
             Set
         </button>
     </body>
