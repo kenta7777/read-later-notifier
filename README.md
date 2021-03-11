@@ -7,7 +7,7 @@ read-later-notifier is a google chrome extension which notifies web pages from y
 
 ## Future Work
 
-- [ ] setting menu
+- [x] setting menu
 
 ## Licence
 
